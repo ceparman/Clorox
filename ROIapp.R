@@ -65,7 +65,7 @@ ui <- fluidPage(
     theme = bs_theme(bg =   clorox_dk_blue ,
                      fg = clorox_yellow, 
                      primary = "#B29612",
-                     secondary = "#990000", 
+                     secondary = clorox_lt_blue , 
                      info=clorox_yellow,
                      base_font = font_google("Lato"),
                      code_font = font_google("Lato"),
@@ -84,7 +84,7 @@ ui <- fluidPage(
                                       ),
                           )            
                           ),
-                        hr(),
+    hr(style= paste("border-color:",clorox_yellow)),
                sidebarLayout(
                  
                  sidebarPanel(width = 4,
@@ -117,12 +117,20 @@ ui <- fluidPage(
                                                        ),
                                                    
                                                 
-                                                         numericInput(
+                                                radioGroupButtons(
                                                            inputId = "N_enhanced_peryear",
                                                            label = "Number of times each year you expect to perform an enhanced clean with an electrostatic spray device",
-                                                           value = 52,
+                                                           choiceNames = c("daily","weekly","bi-weekly","monthly"),
+                                                           selected=52,
+                                                           choiceValues = c(365,52,21,12)
                                                          ),
-                                                  
+                                               # numericInput(
+                                              #    inputId = "N_enhanced_peryear",
+                                              #    label = "Number of times each year you expect to perform an enhanced clean with an electrostatic spray device",
+                                              #    value = 52,
+                                              #  ),  
+                                                
+                                                
                                                           numericInput(
                                                            inputId = "Housekeeper_wage",
                                                              label = "Housekeeper wage per hour (in $)",
@@ -182,13 +190,15 @@ ui <- fluidPage(
                             
                     )
                     )
-                   ),
+                   )
                    
                  
                )
+          
                           
-  
-)
+ 
+),
+hr(style= paste("border-color:",clorox_yellow))
 )
   
 
@@ -202,7 +212,7 @@ server <- function(input, output, session){
  
   
   output$results <- renderUI({
-    
+ 
     V1 <- input$V1
     PRnorm <- input$PRnorm
     PRintv <- input$PRintv
@@ -212,7 +222,7 @@ server <- function(input, output, session){
     Cleaning_standard <- input$Cleaning_standard
     Cleaning_enhanced <- input$Cleaning_enhanced
     Device_cost <- input$Device_cost
-    N_enhanced_peryear <- input$N_enhanced_peryear
+    N_enhanced_peryear <- as.numeric( input$N_enhanced_peryear )
     
     result <- ROI_calculator(V1 = V1, PRnorm = PRnorm, PRintv = PRintv, Time = Time, Hospital_rent = Hospital_rent, 
                              Housekeeper_wage = Housekeeper_wage, Cleaning_standard = Cleaning_standard, Cleaning_enhanced = Cleaning_enhanced,
