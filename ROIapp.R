@@ -62,15 +62,15 @@ ui <- fluidPage(
     # ),
     
     ## Clorox Them 
-    theme = bs_theme(bg =   clorox_dk_blue ,
-                     fg = clorox_yellow, 
+    theme = bs_theme(bg =   "white" ,
+                     fg = clorox_dk_blue, 
                      primary = "#B29612",
                      secondary = clorox_lt_blue , 
                      info=clorox_yellow,
                      base_font = font_google("Lato"),
                      code_font = font_google("Lato"),
                      heading_font = font_google("Tinos"),
-                   font_scale = 1.25
+                   font_scale = 1.
           ),
       
                titlePanel(windowTitle = "CloroxPro" ,
@@ -89,87 +89,87 @@ ui <- fluidPage(
                  
                  sidebarPanel(width = 4,
                    
-                   tabsetPanel( id="inputs",
-                                          tabPanel("C. diff infection",
-                                                          numericInput(
-                                                            inputId = "V1",
-                                                            label = "Cost (in $) to treat a hospital-acquired C. diff infection",
-                                                            value = 12313
-                                                          ),
-                                                          
-                                                          numericInput(
-                                                            inputId = "PRnorm",
-                                                            label = "Base risk (in %) of acquiring a C. diff infection",
-                                                            value = 11,
-                                                          ),
-                                                     
-                                                           numericInput(
-                                                             inputId = "PRintv",
-                                                             label = "Risk (in %) of acquiring a C. diff infection after enhanced cleaning and disinfecting",
-                                                             value = 4.6,
-                                                          )
-                                                   ),
-                                       tabPanel("Cleaning Cost and Schedule",
-                                                        numericInput(
-                                                           inputId = "Time",
-                                                           label = "Time (in minutes) to perform enhanced disinfection",
-                                                           value = 15,
-                                                       ),
-                                                   
-                                                
-                                                radioGroupButtons(
-                                                           inputId = "N_enhanced_peryear",
-                                                           label = "Number of times each year you expect to perform an enhanced clean with an electrostatic spray device",
-                                                           choiceNames = c("daily","weekly","bi-weekly","monthly"),
-                                                           selected=52,
-                                                           choiceValues = c(365,52,21,12)
-                                                         ),
-                                               # numericInput(
-                                              #    inputId = "N_enhanced_peryear",
-                                              #    label = "Number of times each year you expect to perform an enhanced clean with an electrostatic spray device",
-                                              #    value = 52,
-                                              #  ),  
-                                                
-                                                
-                                                          numericInput(
-                                                           inputId = "Housekeeper_wage",
-                                                             label = "Housekeeper wage per hour (in $)",
-                                                             value = 12.89,
-                                                           ),
-                                                     
-                                                           numericInput(
-                                                             inputId = "Cleaning_standard",
-                                                             label = "Cost of supplies per standard room clean (in $)",
-                                                             value = 0.38,
-                                                           ),
-                                                     
-                                                           numericInput(
-                                                             inputId = "Cleaning_enhanced",
-                                                             label = "Cost of supplies per enhanced room clean (in $)",
-                                                             value = 0.81,
-                                                           )
-                                                     
-                                                  
-                                                  ),
-                                
-                                         tabPanel("Facility Costs",
-                                                          numericInput(
-                                                            inputId = "Hospital_rent",
-                                                            label = "Cost per day (in $) for a patient to stay in hospital room",
-                                                            value = 2502,
-                                                          ),
-
-                                                          numericInput(
-                                                            inputId = "Device_cost",
-                                                            label = "Cost of electrostatic spray device (in $)",
-                                                            value = 4500,
-                                                          )
-                                                  
-                                                  ) 
-                                
-                                
-                           )
-                   
+                    fluidRow(
+                      
+                              column(6,
+                                    verticalLayout( 
+                                   #   numericInput(
+                                  #      inputId = "V1",
+                                  #      label = "Cost (in $) to treat a hospital-acquired C. diff infection",
+                                  #      value = 12313
+                                  #    ),
+                                      
+                                      numericInputIcon(
+                                        inputId = "V1",
+                                        label = "Cost (in $) to treat a hospital-acquired C. diff infection",
+                                        value = 12313,
+                                        icon = list(icon("dollar-sign"),NULL)
+                                      ),
+                                      
+                                      
+                                      numericInput(
+                                        inputId = "PRnorm",
+                                        label = "Base risk (in %) of acquiring a C. diff infection",
+                                        value = 11,
+                                      ),
+                                      
+                                      numericInput(
+                                        inputId = "PRintv",
+                                        label = "Risk (in %) of acquiring a C. diff infection after enhanced cleaning and disinfecting",
+                                        value = 4.6,
+                                      ),    numericInput(
+                                        inputId = "Time",
+                                        label = "Time (in minutes) to perform enhanced disinfection",
+                                        value = 15,
+                                      ),
+                                      
+                                      
+                                      radioGroupButtons(
+                                        inputId = "N_enhanced_peryear",
+                                        label = "Number of times each year you expect to perform an enhanced clean with an electrostatic spray device",
+                                        choiceNames = c("daily","weekly","bi-weekly","monthly"),
+                                        selected=52,
+                                        choiceValues = c(365,52,21,12)
+                                      )
+                                      
+                                      )  
+                                     ),
+                              column(6,
+                                     verticalLayout(
+                                     numericInput(
+                                       inputId = "Housekeeper_wage",
+                                       label = "Housekeeper wage per hour (in $)",
+                                       value = 12.89,
+                                     ),
+                                     
+                                     numericInput(
+                                       inputId = "Cleaning_standard",
+                                       label = "Cost of supplies per standard room clean (in $)",
+                                       value = 0.38,
+                                     ),
+                                     
+                                     numericInput(
+                                       inputId = "Cleaning_enhanced",
+                                       label = "Cost of supplies per enhanced room clean (in $)",
+                                       value = 0.81,
+                                     ),
+                                     numericInput(
+                                       inputId = "Hospital_rent",
+                                       label = "Cost per day (in $) for a patient to stay in hospital room",
+                                       value = 2502,
+                                     ),
+                                     
+                                     numericInput(
+                                       inputId = "Device_cost",
+                                       label = "Cost of electrostatic spray device (in $)",
+                                       value = 4500,
+                                       )
+                                    ) 
+                                     
+                              )  
+                    ) #end Row       
+                              
+                
                  ),
                  mainPanel(
                   
