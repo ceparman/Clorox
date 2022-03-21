@@ -13,6 +13,7 @@ library(ggforce)
 library(shiny)
 library(readr)
 library(bslib)
+library(stringr)
 
 ## Function for the Shiny app to use
 
@@ -41,10 +42,10 @@ ROI_calculator <- function(V1 = 12313, PRnorm = 11, PRintv = 4.6, Time = 15, Hos
   
   
   ## Outputs
-  Ob_output <- paste0("Estimate Cost Savings Per Year of Adding Enhanced Cleaning and Disinfection: $", Ob)
-  PRinc_output <- paste0("Probability risk reduction of in-room transmission: ", PRinc_print, "%")
+  Ob_output <- "Estimate Cost Savings Per Year of Adding Enhanced Cleaning and Disinfection."# $", Ob)
+  PRinc_output <- "Probability risk reduction of in-room transmission." # , PRinc_print, "%")
   
-  result <- as.list(c(Ob_output, PRinc_output))
+  result <- as.list(c(Ob_output, PRinc_output,prettyNum(Ob ,scientific = FALSE, big.mark = ","),PRinc_print))
   
   return(result)
   
@@ -52,3 +53,36 @@ ROI_calculator <- function(V1 = 12313, PRnorm = 11, PRintv = 4.6, Time = 15, Hos
 }
 
 ROI_calculator()
+
+
+customInfoBox <- function(title, value = NULL, subtitle = NULL,
+                    icon = shiny::icon("bar-chart"), color = "aqua", width = 4, href = NULL,
+                    fill = FALSE) {
+  
+#  validateColor(color)
+  shinydashboard:::tagAssert(icon, type = "i")
+  
+  colorClass <- paste0("bg-", color)
+  
+  boxContent <- div(
+    class = "info-box",
+    class = if (fill) colorClass,
+    span(
+      class = "info-box-icon",
+      class = if (!fill) colorClass,
+      icon
+    ),
+    div(class = "info-box-content",
+        span(class = "info-box-text", title),
+        if (!is.null(value)) span(class = "info-box-number", value),
+        if (!is.null(subtitle)) p(subtitle)
+    )
+  )
+  
+  if (!is.null(href))
+    boxContent <- a(href = href, boxContent)
+  
+  div(class = if (!is.null(width)) paste0("col-sm-", width),
+      boxContent
+  )
+}
