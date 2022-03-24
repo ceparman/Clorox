@@ -77,17 +77,19 @@ ui <- fluidPage(
                           fluidRow(
                             
                                      column(2,align="left",
-                                            img( src="clorox.JPG",height="100px")
+                                            tags$a(img( src="clorox.JPG",height="100px"),
+                                                   href="https://www.cloroxpro.com", target="_blank")
+                                            
                                             ),
                                      column(8,align="center",
-                                     h1("Cost Benefit to Adding Cleaning Time", align = "center")
+                                     h1("Cost Benefit of an Enhanced Disinfection Step to Prevent Hospital Aquired Infections", align = "center")
                                       ),
                           )            
                           ),
     hr(style= paste("border-color:",clorox_yellow)),
                sidebarLayout(
                  
-                 sidebarPanel(width = 4,
+                 sidebarPanel(width = 5,
                    
                     fluidRow(
                       
@@ -98,42 +100,60 @@ ui <- fluidPage(
                                   #      label = "Cost (in $) to treat a hospital-acquired C. diff infection",
                                   #      value = 12313
                                   #    ),
+                                      # 
+                                      
+                                      awesomeRadio(
+                                        inputId = "i_type",
+                                        label = "Pathogen", 
+                                        choices = c("C. diff","VRE","MRSA"),
+                                        selected = "C. diff",
+                                        inline = TRUE, 
+                                        status = "success"
+                                      ),
+                                      
+                                      
+                                       # numericInputIcon(
+                                       #   inputId = "V1",
+                                       #   label = "Cost (in $) to treat a hospital-acquired C. diff infection",
+                                       #   value = 12313,
+                                       #   icon = list(icon("dollar-sign"),NULL)
+                                       # ),
+                                       
+                                    
+                                      # numericInput(
+                                      #   inputId = "PRnorm",
+                                      #   label = "Base risk (in %) of acquiring a C. diff infection",
+                                      #   value = 11,
+                                      # ),
+                                      # 
+                                      # numericInput(
+                                      #   inputId = "PRintv",
+                                      #   label = "Risk (in %) of acquiring a C. diff infection after enhanced cleaning and disinfecting",
+                                      #   value = 4.6,
+                                      # ),
+                                      # 
                                       
                                       numericInputIcon(
-                                        inputId = "V1",
-                                        label = "Cost (in $) to treat a hospital-acquired C. diff infection",
-                                        value = 12313,
-                                        icon = list(icon("dollar-sign"),NULL)
-                                      ),
-                                      
-                                      
-                                      numericInput(
-                                        inputId = "PRnorm",
-                                        label = "Base risk (in %) of acquiring a C. diff infection",
-                                        value = 11,
-                                      ),
-                                      
-                                      numericInput(
-                                        inputId = "PRintv",
-                                        label = "Risk (in %) of acquiring a C. diff infection after enhanced cleaning and disinfecting",
-                                        value = 4.6,
-                                      ),    numericInput(
                                         inputId = "Time",
-                                        label = "Time (in minutes) to perform enhanced disinfection",
+                                        label = "Total time for electrostatic spraying per patient room",
                                         value = 15,
+                                        icon = list(NULL,"Minutes")
                                       ),
                                       
-                                      
+                                     hr(),
                                       radioGroupButtons(
                                         inputId = "N_enhanced_peryear",
                                         label = "Number of times each year you expect to perform an enhanced clean with an electrostatic spray device",
-                                        choiceNames = c("daily","weekly","bi-weekly","monthly"),
+                                        choiceNames = c("daily","weekly","monthly","custom"),
                                         selected=52,
-                                        choiceValues = c(365,52,21,12)
-                                      )
+                                        choiceValues = c(365,52,12,0)
+                                      ),
+                                      
+                                      uiOutput("custom_period")
                                       
                                       )  
                                      ),
+                                    
                               column(6,
                                      verticalLayout(
                                      numericInput(
@@ -210,6 +230,41 @@ hr(style= paste("border-color:",clorox_yellow))
 
 server <- function(input, output, session){
  
+  
+  output$custom_period <- renderUI({
+    
+    
+    if( input$N_enhanced_peryear != 0) {
+      
+      tagList(
+      NULL
+      )
+      
+    }else{
+      tagList(
+      fluidRow(
+        column(6,
+               numericInput("cust_freq",label = "Frequency",value = 1,min = 0,max = 10)
+               ),
+        column(6,
+               selectInput("cust_period",label = "Period",choices = c("daily" = 365 ,"weekly" = 52 ,"monthly" = 12 ))
+               )
+        
+
+        )
+      )
+      
+      
+      
+    }
+    
+    
+    
+    
+  })
+  
+  
+  
   
   output$results <- renderUI({
  
