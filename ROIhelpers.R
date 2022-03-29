@@ -105,7 +105,12 @@ path_parms <- tribble(
   
   
   
+background <- paste("Hospital-acquired infections cost the US healthcare systen an estimated $4.8 billion annually.<br>",
 
+"Increasing cleaning and disinfecting time may reduce transmission of hospital-acquired Clostridioides difficile (C. diff), methicillin-resistant Staphylococcus aureus (MRSA), and vancomycin-resistant enterococcus (VRE) infections.<br>",
+
+"Use this calculator to determine how many infections your facility could prevent and how much money this could save your hospital each year."
+)
 
 
 

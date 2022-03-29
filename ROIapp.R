@@ -47,7 +47,7 @@ clorox_yellow = "#FFD92A"
       
 ui <- fluidPage(
     tags$script(inactivity),
-   
+  
     useShinydashboard(),
      
      ## Clorox Theme
@@ -85,128 +85,109 @@ ui <- fluidPage(
                           )            
                           ),
                  hr(style= paste("border-color:",clorox_yellow)),
+    
                sidebarLayout(
                  
-                 sidebarPanel(width = 4,
+                 sidebarPanel(width = 5,style = "height: 100%;",
                    
                     fluidRow(
-                      
-                              column(6,
-                                   
-                                   #   numericInput(
-                                  #      inputId = "V1",
-                                  #      label = "Cost (in $) to treat a hospital-acquired C. diff infection",
-                                  #      value = 12313
-                                  #    ),
-                                      # 
-                                      
+                                column(12,
                                       awesomeRadio(
                                         inputId = "i_type",
                                         label = "Pathogen", 
                                         choices = c("C. diff","VRE","MRSA"),
                                         selected = "C. diff",
                                         inline = TRUE, 
+                                        width = "100%",
                                         status = "success"
-                                      ),
-                                      
-                                      hr(),
-                                       # numericInputIcon(
-                                       #   inputId = "V1",
-                                       #   label = "Cost (in $) to treat a hospital-acquired C. diff infection",
-                                       #   value = 12313,
-                                       #   icon = list(icon("dollar-sign"),NULL)
-                                       # ),
-                                       
-                                    
-                                      # numericInput(
-                                      #   inputId = "PRnorm",
-                                      #   label = "Base risk (in %) of acquiring a C. diff infection",
-                                      #   value = 11,
-                                      # ),
-                                      # 
-                                      # numericInput(
-                                      #   inputId = "PRintv",
-                                      #   label = "Risk (in %) of acquiring a C. diff infection after enhanced cleaning and disinfecting",
-                                      #   value = 4.6,
-                                      # ),
-                                      # 
-                                      
-                                      numericInputIcon(
-                                        inputId = "Time",
-                                        label = "Total time for electrostatic spraying per patient room",
-                                        value = 15,
-                                        icon = list(NULL,"Minutes")
-                                      ),
-                                      
-                                     hr(),
-                                      radioGroupButtons(
-                                        inputId = "N_enhanced_per_year",
-                                        label = "Frequency of electrostatic sprayer use in patient rooms",
-                                        choiceNames = c("daily","weekly","monthly","custom"),
-                                        selected=52,
-                                        choiceValues = c(365,52,12,0)
-                                      ),
-                                      
-                                      uiOutput("custom_period")
-                                      
-                                      
-                                     ),
-                                    
-                              column(5,offset=1,
-                                     verticalLayout(
-                                       numericInputIcon(
-                                       inputId = "Housekeeper_wage",
-                                       label = "EVS Wage per hour",
-                                       value = 12.89,
-                                       icon = list(icon("dollar-sign"),NULL)
-                                     ),
-                                     
-                                     # numericInputIcon(
-                                     #   inputId = "V1",
-                                     #   label = "Cost (in $) to treat a hospital-acquired C. diff infection",
-                                     #   value = 12313,
-                                     #   icon = list(icon("dollar-sign"),NULL)
-                                     # ),
-                                     
-                                     
-                                     numericInputIcon(
-                                       inputId = "Cleaning_standard",
-                                       label = "Standard cleaning cost per room ",
-                                       value = 0.38,
-                                       icon = list(icon("dollar-sign"),NULL)
-                                     ),
-                                     
-                                     numericInputIcon(
-                                       inputId = "Cleaning_enhanced",
-                                       label = "Electochemistry cost per patient room",
-                                       value = 0.81,
-                                       icon = list(icon("dollar-sign"),NULL)
-                                     ),
+                                      )
+                                     )
+                                
+                                ),
+                        hr(),
+                        fluidRow(             
+                          column(4,
+                                 
+                                 numericInputIcon(
+                                   inputId = "Housekeeper_wage",
+                                   label = "EVS Wage per hour",
+                                   value = 12.89,
+                                   icon = list(icon("dollar-sign"),NULL)
+                                 )
+                              ),
+                          column(4 ,    
+                                 numericInputIcon(
+                                   inputId = "Time",
+                                   label = "Total time for electrostatic spraying per patient room",
+                                   value = 15,
+                                   icon = list(NULL,"Minutes")
+                                 )
+                          ),
+
+                              column(4,
                                      numericInputIcon(
                                        inputId = "Hospital_rent",
                                        label = "Average patient cost per day",
                                        value = 2502,
                                        icon = list(icon("dollar-sign"),NULL)
-                                     ),
-                                     
+                                     )
+                              )
+                          ),
+                          
+                            fluidRow(
+                              column(4,     
                                      numericInputIcon(
                                        inputId = "Device_cost",
                                        label = "Cost of electrostatic sprayer",
                                        value = 4500,
                                        icon = list(icon("dollar-sign"),NULL)
-                                       )
-                                    ) 
-                                     
-                              )  
-                    ) #end Row       
+                                     )
+                              ),
+
+                           column(4,     
+                                  numericInputIcon(
+                                    inputId = "Cleaning_enhanced",
+                                    label = "Electochemistry cost per patient room",
+                                    value = 0.81,
+                                    icon = list(icon("dollar-sign"),NULL)
+                                    )
+                                  ),
+                           column(4, 
+                                  numericInputIcon(
+                                    inputId = "Cleaning_standard",
+                                    label = "Standard cleaning cost per room ",
+                                    value = 0.38,
+                                    icon = list(icon("dollar-sign"),NULL)
+                                  )
+                                )
+                         
+                            ),
+                          
+                            
+                  
+                 fluidRow( 
+                   column(6, 
+                          radioGroupButtons(
+                            inputId = "N_enhanced_per_year",
+                            label = "Frequency of electrostatic sprayer use in patient rooms",
+                            choiceNames = c("daily","weekly","monthly","custom"),
+                            selected=52,
+                            choiceValues = c(365,52,12,0)
+                          ),
+                          
+                          uiOutput("custom_period")
+                          
+                          
+                   )
+                 ),#end Row       
                               
                 
                  ),
-                 mainPanel(
+                 mainPanel(width = 7,
                   
                    fluidRow(
                     column(6,
-                           wellPanel(
+                           wellPanel(style = "height: 100%;",
                             
                              
                              uiOutput("results")
@@ -214,9 +195,8 @@ ui <- fluidPage(
                     ),
                     
                     column(6,
-                           wellPanel(
-                             h3('A Title'),
-                             tags$text("Some text describing the project")
+                           wellPanel(style = "height: 100%;",
+                           h3(HTML(background))
                             
                             
                     )
@@ -341,11 +321,15 @@ if (input$N_enhanced_per_year != "0") {
     
     tagList(
       valueBox( paste("$",v1),subtitle =paste("Cost Reduction /n", str1),width=12,
-               color="green"
+               color="blue"
            ) ,
       valueBox( paste(v2,"%"), subtitle = paste("Infection Reduction", str2), width=12,
-     color= "blue"
-          )
+     color= "green"
+          ),
+     valueBox(  round(( N_enhanced_per_year * as.numeric(v2) / 100 ),0), subtitle = paste("Infections prevented yearly"), width=12,
+               color= "light-blue"
+     ),
+     
     )
   })
   
