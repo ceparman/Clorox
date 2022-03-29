@@ -91,22 +91,37 @@ ui <- fluidPage(
                  sidebarPanel(width = 5,style = "height: 100%;",
                    
                     fluidRow(
-                                column(12,
+                                column(6,
                                       awesomeRadio(
                                         inputId = "i_type",
                                         label = "Pathogen", 
                                         choices = c("C. diff","VRE","MRSA"),
                                         selected = "C. diff",
-                                        inline = TRUE, 
-                                        width = "100%",
+                                        inline = T, 
                                         status = "success"
                                       )
-                                     )
+                                     ),
+                                column(6, 
+                                       radioGroupButtons(
+                                         inputId = "N_enhanced_per_year",
+                                         label = "Frequency of electrostatic sprayer use in patient rooms",
+                                         choiceNames = c("daily","weekly","monthly","custom"),
+                                         selected=52,
+                                         size = "sm",
+                                         justified = T,
+                                         width="100%",
+                                         choiceValues = c(365,52,12,0)
+                                       ),
+                                       
+                                       uiOutput("custom_period")
+                                       
+                                       
+                                )
                                 
                                 ),
                         hr(),
                         fluidRow(             
-                          column(4,
+                          column(6,
                                  
                                  numericInputIcon(
                                    inputId = "Housekeeper_wage",
@@ -115,36 +130,37 @@ ui <- fluidPage(
                                    icon = list(icon("dollar-sign"),NULL)
                                  )
                               ),
-                          column(4 ,    
+                          column(6 ,    
                                  numericInputIcon(
                                    inputId = "Time",
-                                   label = "Total time for electrostatic spraying per patient room",
+                                   label = "Time for electrostatic spraying per patient room",
                                    value = 15,
                                    icon = list(NULL,"Minutes")
                                  )
+                          )
                           ),
+                     fluidRow(
 
-                              column(4,
+                              column(6,
                                      numericInputIcon(
                                        inputId = "Hospital_rent",
                                        label = "Average patient cost per day",
                                        value = 2502,
                                        icon = list(icon("dollar-sign"),NULL)
                                      )
-                              )
-                          ),
-                          
-                            fluidRow(
-                              column(4,     
+                              ),
+
+                              column(6,     
                                      numericInputIcon(
                                        inputId = "Device_cost",
                                        label = "Cost of electrostatic sprayer",
                                        value = 4500,
                                        icon = list(icon("dollar-sign"),NULL)
                                      )
-                              ),
-
-                           column(4,     
+                                 )
+                            ),
+                           fluidRow(
+                           column(6,     
                                   numericInputIcon(
                                     inputId = "Cleaning_enhanced",
                                     label = "Electochemistry cost per patient room",
@@ -152,7 +168,7 @@ ui <- fluidPage(
                                     icon = list(icon("dollar-sign"),NULL)
                                     )
                                   ),
-                           column(4, 
+                           column(6, 
                                   numericInputIcon(
                                     inputId = "Cleaning_standard",
                                     label = "Standard cleaning cost per room ",
@@ -162,25 +178,7 @@ ui <- fluidPage(
                                 )
                          
                             ),
-                          
-                            
                   
-                 fluidRow( 
-                   column(6, 
-                          radioGroupButtons(
-                            inputId = "N_enhanced_per_year",
-                            label = "Frequency of electrostatic sprayer use in patient rooms",
-                            choiceNames = c("daily","weekly","monthly","custom"),
-                            selected=52,
-                            choiceValues = c(365,52,12,0)
-                          ),
-                          
-                          uiOutput("custom_period")
-                          
-                          
-                   )
-                 ),#end Row       
-                              
                 
                  ),
                  mainPanel(width = 7,
