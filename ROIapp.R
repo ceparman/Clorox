@@ -9,8 +9,6 @@ library(tidyr)
 library(shinyWidgets)
 
 
-
-
 ## Load Julian function
 source("ROIhelpers.R")
 
@@ -61,7 +59,7 @@ ui <- fluidPage(
     #   code_font = font_google("Open Sans")
     # ),
     
-    ## Clorox Them 
+    ## Clorox Theme
     theme = bs_theme(bg =   "white" ,
                      fg = clorox_dk_blue, 
                      primary = "#B29612",
@@ -86,15 +84,15 @@ ui <- fluidPage(
                                       ),
                           )            
                           ),
-    hr(style= paste("border-color:",clorox_yellow)),
+                 hr(style= paste("border-color:",clorox_yellow)),
                sidebarLayout(
                  
-                 sidebarPanel(width = 5,
+                 sidebarPanel(width = 4,
                    
                     fluidRow(
                       
                               column(6,
-                                    verticalLayout( 
+                                   
                                    #   numericInput(
                                   #      inputId = "V1",
                                   #      label = "Cost (in $) to treat a hospital-acquired C. diff infection",
@@ -111,7 +109,7 @@ ui <- fluidPage(
                                         status = "success"
                                       ),
                                       
-                                      
+                                      hr(),
                                        # numericInputIcon(
                                        #   inputId = "V1",
                                        #   label = "Cost (in $) to treat a hospital-acquired C. diff infection",
@@ -142,8 +140,8 @@ ui <- fluidPage(
                                       
                                      hr(),
                                       radioGroupButtons(
-                                        inputId = "N_enhanced_peryear",
-                                        label = "Number of times each year you expect to perform an enhanced clean with an electrostatic spray device",
+                                        inputId = "N_enhanced_per_year",
+                                        label = "Frequency of electrostatic sprayer use in patient rooms",
                                         choiceNames = c("daily","weekly","monthly","custom"),
                                         selected=52,
                                         choiceValues = c(365,52,12,0)
@@ -151,38 +149,51 @@ ui <- fluidPage(
                                       
                                       uiOutput("custom_period")
                                       
-                                      )  
+                                      
                                      ),
                                     
-                              column(6,
+                              column(5,offset=1,
                                      verticalLayout(
-                                     numericInput(
+                                       numericInputIcon(
                                        inputId = "Housekeeper_wage",
-                                       label = "Housekeeper wage per hour (in $)",
+                                       label = "EVS Wage per hour",
                                        value = 12.89,
+                                       icon = list(icon("dollar-sign"),NULL)
                                      ),
                                      
-                                     numericInput(
+                                     # numericInputIcon(
+                                     #   inputId = "V1",
+                                     #   label = "Cost (in $) to treat a hospital-acquired C. diff infection",
+                                     #   value = 12313,
+                                     #   icon = list(icon("dollar-sign"),NULL)
+                                     # ),
+                                     
+                                     
+                                     numericInputIcon(
                                        inputId = "Cleaning_standard",
-                                       label = "Cost of supplies per standard room clean (in $)",
+                                       label = "Standard cleaning cost per room ",
                                        value = 0.38,
+                                       icon = list(icon("dollar-sign"),NULL)
                                      ),
                                      
-                                     numericInput(
+                                     numericInputIcon(
                                        inputId = "Cleaning_enhanced",
-                                       label = "Cost of supplies per enhanced room clean (in $)",
+                                       label = "Electochemistry cost per patient room",
                                        value = 0.81,
+                                       icon = list(icon("dollar-sign"),NULL)
                                      ),
-                                     numericInput(
+                                     numericInputIcon(
                                        inputId = "Hospital_rent",
-                                       label = "Cost per day (in $) for a patient to stay in hospital room",
+                                       label = "Average patient cost per day",
                                        value = 2502,
+                                       icon = list(icon("dollar-sign"),NULL)
                                      ),
                                      
-                                     numericInput(
+                                     numericInputIcon(
                                        inputId = "Device_cost",
-                                       label = "Cost of electrostatic spray device (in $)",
+                                       label = "Cost of electrostatic sprayer",
                                        value = 4500,
+                                       icon = list(icon("dollar-sign"),NULL)
                                        )
                                     ) 
                                      
@@ -218,7 +229,9 @@ ui <- fluidPage(
                           
  
 ),
-hr(style= paste("border-color:",clorox_yellow))
+hr(style= paste("border-color:",clorox_yellow)),
+
+h6(footnote)
 )
   
 
@@ -234,7 +247,7 @@ server <- function(input, output, session){
   output$custom_period <- renderUI({
     
     
-    if( input$N_enhanced_peryear != 0) {
+    if( input$N_enhanced_per_year != 0) {
       
       tagList(
       NULL
@@ -244,7 +257,7 @@ server <- function(input, output, session){
       tagList(
       fluidRow(
         column(6,
-               numericInput("cust_freq",label = "Frequency",value = 1,min = 0,max = 10)
+               numericInput("cust_freq",label = "Frequency",value = 1,min = 1,max = 10)
                ),
         column(6,
                selectInput("cust_period",label = "Period",choices = c("daily" = 365 ,"weekly" = 52 ,"monthly" = 12 ))
@@ -264,24 +277,62 @@ server <- function(input, output, session){
   })
   
   
+cost <- reactive({
   
+  path_parms%>% dplyr::filter(Pathogen ==  input$i_type) %>% pull(cost)
+  
+  
+  
+})
+
+base_risk <- reactive({
+  
+  path_parms %>% dplyr::filter(Pathogen ==  input$i_type) %>% pull(base_risk)
+  
+})
+  
+  
+improve_risk <- reactive({
+  
+  path_parms %>% dplyr::filter(Pathogen ==  input$i_type) %>% pull(improve_risk)
+  
+})
+
+cleaning_per_year <- reactive({
+  
+
+  
+if (input$N_enhanced_per_year != "0") {
+  
+  return(as.numeric(input$N_enhanced_per_year))
+}else{
+  
+  return( ( input$cust_freq * as.numeric(input$cust_period)) )
+  
+}
+  
+  
+})  
+
   
   output$results <- renderUI({
  
-    V1 <- input$V1
-    PRnorm <- input$PRnorm
-    PRintv <- input$PRintv
+  req( cost(),improve_risk(),cleaning_per_year())
+    
+    V1 <- cost()
+    PRnorm <- base_risk()
+    PRintv <- improve_risk()
     Time <- input$Time
     Hospital_rent <- input$Hospital_rent
     Housekeeper_wage <- input$Housekeeper_wage
     Cleaning_standard <- input$Cleaning_standard
     Cleaning_enhanced <- input$Cleaning_enhanced
     Device_cost <- input$Device_cost
-    N_enhanced_peryear <- as.numeric( input$N_enhanced_peryear )
+    N_enhanced_per_year <- cleaning_per_year()
     
     result <- ROI_calculator(V1 = V1, PRnorm = PRnorm, PRintv = PRintv, Time = Time, Hospital_rent = Hospital_rent, 
                              Housekeeper_wage = Housekeeper_wage, Cleaning_standard = Cleaning_standard, Cleaning_enhanced = Cleaning_enhanced,
-                             Device_cost = Device_cost, N_enhanced_peryear = N_enhanced_peryear)
+                             Device_cost = Device_cost, N_enhanced_per_year = N_enhanced_per_year)
     
     str1 <- result[[1]]
     str2 <- result[[2]]

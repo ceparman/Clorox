@@ -19,7 +19,7 @@ library(stringr)
 
 
 ROI_calculator <- function(V1 = 12313, PRnorm = 11, PRintv = 4.6, Time = 15, Hospital_rent = 2502, Housekeeper_wage = 12.89, 
-                           Cleaning_standard = 0.38, Cleaning_enhanced = 0.81, Device_cost = 4500, N_enhanced_peryear = 52){
+                           Cleaning_standard = 0.38, Cleaning_enhanced = 0.81, Device_cost = 4500, N_enhanced_per_year = 52){
   ## Inputs
   ## Incremental probability reduction of an infection
   PRinc <- (PRnorm - PRintv)/100
@@ -33,12 +33,13 @@ ROI_calculator <- function(V1 = 12313, PRnorm = 11, PRintv = 4.6, Time = 15, Hos
   
   ## Incremental cleaning costs
   F3inc <- Cleaning_standard + Cleaning_enhanced
+
   
   ## Cost of T360 per usage
-  F4inc <- Device_cost/N_enhanced_peryear
+  F4inc <- Device_cost / N_enhanced_per_year
   
   ## Calculation
-  Ob <- trunc((V1*PRinc) - (F1inc + F2inc + F3inc + F4inc))*N_enhanced_peryear
+  Ob <- trunc((V1*PRinc) - (F1inc + F2inc + F3inc + F4inc))*N_enhanced_per_year
   
   
   ## Outputs
@@ -86,3 +87,27 @@ customInfoBox <- function(title, value = NULL, subtitle = NULL,
       boxContent
   )
 }
+
+footnote <- paste(
+"This cost-benefit model adopted from Wendeboe, A.M., Kim, S.E., Kinny, et. al. (2021).",
+"Cost-benifit analysis of allowing additional time in cleaning hospital contact precautions room. Hospital Topics, 99(3), 130-130"
+)
+
+#Custom cost for pathogens
+
+path_parms <- tribble(
+      ~Pathogen,~cost,~base_risk,~improve_risk,
+      "C. diff", 12313, 11, 4.6,
+      "VRE", 18000, 4.5, 2.8,
+      "MRSA", 14000, 3.9, .29,
+)
+  
+  
+  
+  
+
+
+
+
+
+
