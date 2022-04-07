@@ -43,8 +43,8 @@ ROI_calculator <- function(V1 = 12313, PRnorm = 11, PRintv = 4.6, Time = 15, Hos
   
   
   ## Outputs
-  Ob_output <- "Estimate Cost Savings Per Year of Adding Enhanced Cleaning and Disinfection."# $", Ob)
-  PRinc_output <- "Probability risk reduction of in-room transmission." # , PRinc_print, "%")
+  Ob_output <- "Estimated cost savings per year of adding enhanced cleaning and disinfection." 
+  PRinc_output <- "Probability risk reduction of in-room transmission." 
   
   result <- as.list(c(Ob_output, PRinc_output,prettyNum(Ob ,scientific = FALSE, big.mark = ","),PRinc_print))
   
@@ -90,7 +90,7 @@ customInfoBox <- function(title, value = NULL, subtitle = NULL,
 
 footnote <- paste(
 "This cost-benefit model adopted from Wendeboe, A.M., Kim, S.E., Kinny, et. al. (2021).",
-"Cost-benifit analysis of allowing additional time in cleaning hospital contact precautions room. Hospital Topics, 99(3), 130-130"
+"Cost-benefit analysis of allowing additional time in cleaning hospital contact precautions room. Hospital Topics, 99(3), 130-130"
 )
 
 #Custom cost for pathogens
@@ -105,13 +105,13 @@ path_parms <- tribble(
   
   
   
-background <- paste("Hospital-acquired infections cost the US healthcare systen an estimated $4.8 billion annually.<br>",
-
-"Increasing cleaning and disinfecting time may reduce transmission of hospital-acquired Clostridioides difficile (C. diff), methicillin-resistant Staphylococcus aureus (MRSA), and vancomycin-resistant enterococcus (VRE) infections.<br>",
-
+background <- HTML( paste("Hospital-acquired infections cost the US healthcare systen an estimated $4.8 billion annually.<br>",
+"Increasing cleaning and disinfecting time may reduce transmission of hospital-acquired <i>Clostridioides difficile</i> (C. diff),",
+"<i>methicillin-resistant Staphylococcus aureus</i> (MRSA), and <i>vancomycin-resistant enterococcus</i>",
+"(VRE) infections.<br>",
 "Use this calculator to determine how many infections your facility could prevent and how much money this could save your hospital each year."
 )
-
+)
 
 
 

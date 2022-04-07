@@ -125,7 +125,7 @@ ui <- fluidPage(
                                  
                                  numericInputIcon(
                                    inputId = "Housekeeper_wage",
-                                   label = "EVS Wage per hour",
+                                   label = "EVS wage per hour",
                                    value = 12.89,
                                    icon = list(icon("dollar-sign"),NULL)
                                  )
@@ -133,7 +133,7 @@ ui <- fluidPage(
                           column(6 ,    
                                  numericInputIcon(
                                    inputId = "Time",
-                                   label = "Time for electrostatic spraying per patient room",
+                                   label = "Time for electrostatic spraying per room",
                                    value = 15,
                                    icon = list(NULL,"Minutes")
                                  )
@@ -144,7 +144,7 @@ ui <- fluidPage(
                               column(6,
                                      numericInputIcon(
                                        inputId = "Hospital_rent",
-                                       label = "Average patient cost per day",
+                                       label = "Average hospital room cost per day",
                                        value = 2502,
                                        icon = list(icon("dollar-sign"),NULL)
                                      )
@@ -160,14 +160,7 @@ ui <- fluidPage(
                                  )
                             ),
                            fluidRow(
-                           column(6,     
-                                  numericInputIcon(
-                                    inputId = "Cleaning_enhanced",
-                                    label = "Electochemistry cost per patient room",
-                                    value = 0.81,
-                                    icon = list(icon("dollar-sign"),NULL)
-                                    )
-                                  ),
+            
                            column(6, 
                                   numericInputIcon(
                                     inputId = "Cleaning_standard",
@@ -175,20 +168,34 @@ ui <- fluidPage(
                                     value = 0.38,
                                     icon = list(icon("dollar-sign"),NULL)
                                   )
-                                )
+                                ),
                          
-                            ),
+                            
+                    column(6,     
+                           numericInputIcon(
+                             inputId = "Cleaning_enhanced",
+                             label = "Electrostatic disinfection cost per room",
+                             value = 0.81,
+                             icon = list(icon("dollar-sign"),NULL)
+                           )
+                    ),
+                    )
                   
                 
                  ),
                  mainPanel(width = 7,
                   
-                   fluidRow(
+                     fluidRow( align = "center",
                     column(6,
                            wellPanel(style = "height: 100%;",
                             
                              
-                             uiOutput("results")
+                             uiOutput("results"),
+
+                             actionButton("report","Download PDF Report",
+                                          style="color: #fff; background-color: #337ab7; border-color: #2e6da4",
+                                          icon = icon("file-pdf"))
+                             
                            )
                     ),
                     
@@ -318,13 +325,15 @@ if (input$N_enhanced_per_year != "0") {
     v2 <- result[[4]]
     
     tagList(
-      valueBox( paste("$",v1),subtitle =paste("Cost Reduction /n", str1),width=12,
+      valueBox( HTML( paste("<b><h4>Cost Reduction:</b><br> $",v1,"</h4>")),subtitle =paste(str1),width=12,
                color="blue"
            ) ,
-      valueBox( paste(v2,"%"), subtitle = paste("Infection Reduction", str2), width=12,
+      valueBox(HTML( paste("<b><h4>Infection Reduction:</b></br> ",v2,"%</h4>")), subtitle = paste(str2), width=12,
      color= "green"
           ),
-     valueBox(  round(( N_enhanced_per_year * as.numeric(v2) / 100 ),0), subtitle = paste("Infections prevented yearly"), width=12,
+     valueBox( HTML(paste("<b><h4>Fewer Infections:</b></br>",
+                          round(( N_enhanced_per_year * as.numeric(v2) / 100 ),0),"</h4>")), 
+                subtitle = "Infections prevented yearly.", width=12,
                color= "light-blue"
      ),
      
