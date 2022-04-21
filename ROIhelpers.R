@@ -88,9 +88,13 @@ customInfoBox <- function(title, value = NULL, subtitle = NULL,
   )
 }
 
-footnote <- paste(
+footnote <- HTML(paste(
+"*based on average cost of TurboPro disinfectant cleaner in a standard hospital room",
+"<br>",
+"<br>",
 "This cost-benefit model adopted from Wendeboe, A.M., Kim, S.E., Kinny, et. al. (2021).",
 "Cost-benefit analysis of allowing additional time in cleaning hospital contact precautions room. Hospital Topics, 99(3), 130-130"
+)
 )
 
 #Custom cost for pathogens

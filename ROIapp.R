@@ -81,7 +81,7 @@ ui <- fluidPage(
                                             
                                             ),
                                      column(8,align="center",
-                                     h1("Cost Benefit of an Enhanced Disinfection Step to Prevent Hospital Aquired Infections", align = "center")
+                                     h1("Cost Benefit of an Enhanced Electrostatic Disinfection Step to Prevent Hospital Aquired Infections", align = "center")
                                       ),
                           )            
                           ),
@@ -134,8 +134,8 @@ ui <- fluidPage(
                           column(6 ,    
                                  numericInputIcon(
                                    inputId = "Time",
-                                   label = "Time for electrostatic spraying per room",
-                                   value = 15,
+                                   label = "Time for electrostatic spraying per room*",
+                                   value = 5,
                                    icon = list(NULL,"Minutes")
                                  )
                           )
