@@ -7,6 +7,7 @@ library(readr)
 library(dplyr)
 library(tidyr)
 library(shinyWidgets)
+library(rmarkdown)
 
 
 ## Load Julian function
@@ -227,41 +228,53 @@ h6(footnote)
 
 
 server <- function(input, output, session){
- 
-  
-  output$custom_period <- renderUI({
-    
-    
-    if( input$N_enhanced_per_year != 0) {
-      
-      tagList(
-      NULL
-      )
-      
-    }else{
-      tagList(
-      fluidRow(
-        column(6,
-               numericInput("cust_freq",label = "Frequency",value = 1,min = 1,max = 10)
-               ),
-        column(6,
-               selectInput("cust_period",label = "Period",choices = c("daily" = 365 ,"weekly" = 52 ,"monthly" = 12 ))
-               )
-        
 
-        )
+#obervers  
+  
+observeEvent(input$report,{
+  
+showModal(
+  modalDialog( size = "l",easyClose = T,
+    tagList(
+      
+      html_report(),
+  
+      fluidRow(
+      column(6,align = "left",actionButton("pdf_return","Return")), 
+      column(6,align = "right",actionButton("pdf_report","Download PDF Report")) 
+        
       )
-      
-      
-      
-    }
+      ),
+    footer = NULL
     
-    
-    
-    
-  })
+  
+  )
+)  
   
   
+  
+})  
+   
+  
+
+#Reactives  
+
+html_report <- reactive({
+  
+  outfile <- tempfile(fileext = ".html")
+  
+  render(input = 'www/report_html.Rmd',output_file = outfile,output_format = "html_document",
+         #  params= list( plot = input$includeplot, data = input$includeassay, attributes = input$includeexpt)
+         #  ,
+         quiet = TRUE)
+  
+  
+  return(includeHTML(  outfile ))
+  
+  
+})  
+  
+    
 cost <- reactive({
   
   path_parms%>% dplyr::filter(Pathogen ==  input$i_type) %>% pull(cost)
@@ -275,7 +288,6 @@ base_risk <- reactive({
   path_parms %>% dplyr::filter(Pathogen ==  input$i_type) %>% pull(base_risk)
   
 })
-  
   
 improve_risk <- reactive({
   
@@ -299,8 +311,9 @@ if (input$N_enhanced_per_year != "0") {
   
 })  
 
+#UI outputs
   
-  output$results <- renderUI({
+output$results <- renderUI({
  
   req( cost(),improve_risk(),cleaning_per_year())
     
@@ -338,6 +351,38 @@ if (input$N_enhanced_per_year != "0") {
      ),
      
     )
+  })
+  
+output$custom_period <- renderUI({
+    
+    
+    if( input$N_enhanced_per_year != 0) {
+      
+      tagList(
+        NULL
+      )
+      
+    }else{
+      tagList(
+        fluidRow(
+          column(6,
+                 numericInput("cust_freq",label = "Frequency",value = 1,min = 1,max = 10)
+          ),
+          column(6,
+                 selectInput("cust_period",label = "Period",choices = c("daily" = 365 ,"weekly" = 52 ,"monthly" = 12 ))
+          )
+          
+          
+        )
+      )
+      
+      
+      
+    }
+    
+    
+    
+    
   })
   
 
