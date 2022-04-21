@@ -109,7 +109,7 @@ path_parms <- tribble(
   
   
   
-background <- HTML( paste("Hospital-acquired infections cost the US healthcare systen an estimated $4.8 billion annually.<br>",
+background <- HTML( paste("Hospital-acquired infections cost the US healthcare systen an estimated $4.8 billion annually. ",
 "Increasing cleaning and disinfecting time may reduce transmission of hospital-acquired <i>Clostridioides difficile</i> (C. diff),",
 "<i>methicillin-resistant Staphylococcus aureus</i> (MRSA), and <i>vancomycin-resistant enterococcus</i>",
 "(VRE) infections.<br>",

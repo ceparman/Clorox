@@ -1,0 +1,25 @@
+---
+title: "ROI Report"
+output: html_document
+date: "`r Sys.Date()`"
+
+params: 
+    plot: "TRUE"
+    data: "TRUE"
+    attributes: "TRUE"
+    sign: "TRUE"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Custom Report
+
+Here is where the report goes
+
+
+## Plots
+
+You can also embed plots, for example:
+

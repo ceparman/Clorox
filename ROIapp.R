@@ -73,23 +73,33 @@ ui <- fluidPage(
           ),
       
                titlePanel(windowTitle = "CloroxPro" ,
-                          fluidRow(
-                            
+                         tagList(
+                           fluidRow(
                                      column(2,align="left",
                                             tags$a(img( src="clorox.JPG",height="100px"),
                                                    href="https://www.cloroxpro.com", target="_blank")
-                                            
                                             ),
                                      column(8,align="center",
-                                     h1("Cost Benefit of an Enhanced Electrostatic Disinfection Step to Prevent Hospital Aquired Infections", align = "center")
-                                      ),
-                          )            
-                          ),
-                 hr(style= paste("border-color:",clorox_yellow)),
-    
+                                     h2("Cost Benefit of an Enhanced Electrostatic Disinfection Step to Prevent Hospital Aquired Infections", align = "center")
+                                      )
+                                    ),
+                           
+                           fluidRow(
+                                     column(10,align="center",offset=1,
+                                             h5(background,style = "text-align: justify")
+                                          )
+                                  ),
+                           fluidRow( 
+                             column(12, 
+                                   hr(style= paste("border-color:",clorox_yellow))
+                             )
+                           )
+                        )
+
+               ),
                sidebarLayout(
                  
-                 sidebarPanel(width = 5,style = "height: 100%;",
+                 sidebarPanel(width = 6,style = "height: 100%;",
                    
                     fluidRow(
                                 column(6,
@@ -115,7 +125,6 @@ ui <- fluidPage(
                                        ),
                                        
                                        uiOutput("custom_period")
-                                       
                                        
                                 )
                                 
@@ -179,34 +188,44 @@ ui <- fluidPage(
                              value = 0.81,
                              icon = list(icon("dollar-sign"),NULL)
                            )
+                      )
                     ),
+                    fluidRow(
+                    column( 12, 
+                            tags$br(),
+                             hr(style= paste("border-color:",clorox_dk_blue)),
+                          )
+                    ),
+                    fluidRow(
+                     column(12,align="center",
+                    actionButton("report","Download PDF Report",
+                                 style="color: #fff; background-color: #337ab7; border-color: #2e6da4",
+                                 icon = icon("file-pdf"))
+                    )
                     )
                   
                 
                  ),
-                 mainPanel(width = 7,
+                 mainPanel(width = 6,style = "height: 100%;",
                   
                      fluidRow( align = "center",
-                    column(6,
-                           wellPanel(style = "height: 100%;",
+                    column(12,
+                           wellPanel(
                             
                              
-                             uiOutput("results"),
-
-                             actionButton("report","Download PDF Report",
-                                          style="color: #fff; background-color: #337ab7; border-color: #2e6da4",
-                                          icon = icon("file-pdf"))
+                             uiOutput("results")
                              
                            )
-                    ),
+                    )
+                    #,
                     
-                    column(6,
-                           wellPanel(style = "height: 100%;",
-                           h3(HTML(background))
+                  #  column(6,
+                  #         wellPanel(style = "height: 100%;",
+                  #         h3(HTML(background))
                             
                             
-                    )
-                    )
+                   # )
+                   # )
                    )
                    
                  
@@ -229,7 +248,7 @@ h6(footnote)
 
 server <- function(input, output, session){
 
-#obervers  
+#observers  
   
 observeEvent(input$report,{
   
@@ -240,7 +259,8 @@ showModal(
       html_report(),
   
       fluidRow(
-      column(6,align = "left",actionButton("pdf_return","Return")), 
+    #  column(6,align = "left",actionButton("pdf_return","Return")), 
+      column(6, modalButton("Cancel")),
       column(6,align = "right",actionButton("pdf_report","Download PDF Report")) 
         
       )
@@ -253,7 +273,17 @@ showModal(
   
   
   
+})
+  
+observeEvent(input$pdf_return,{
+  removeModal()
+  
+  
+  
+  
 })  
+  
+  
    
   
 
