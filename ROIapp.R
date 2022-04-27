@@ -80,7 +80,7 @@ ui <- fluidPage(
                                                    href="https://www.cloroxpro.com", target="_blank")
                                             ),
                                      column(8,align="center",
-                                     h2("Cost Benefit of an Enhanced Electrostatic Disinfection Step to Prevent Hospital Aquired Infections", align = "center")
+                                     h2("Cost Benefit of an Enhanced Electrostatic Disinfection Step to Prevent Hospital Acquired Infections", align = "center")
                                       )
                                     ),
                            
@@ -143,7 +143,7 @@ ui <- fluidPage(
                           column(6 ,    
                                  numericInputIcon(
                                    inputId = "Time",
-                                   label = "Time for electrostatic spraying per room*",
+                                   label = "Time for electrostatic spraying per room",
                                    value = 5,
                                    icon = list(NULL,"Minutes")
                                  )
@@ -184,7 +184,7 @@ ui <- fluidPage(
                     column(6,     
                            numericInputIcon(
                              inputId = "Cleaning_enhanced",
-                             label = "Electrostatic disinfection cost per room",
+                             label = "Electrostatic disinfection chemistry cost per room*",
                              value = 0.81,
                              icon = list(icon("dollar-sign"),NULL)
                            )
@@ -368,16 +368,22 @@ output$results <- renderUI({
     v2 <- result[[4]]
     
     tagList(
-      valueBox( HTML( paste("<b><h4>Cost Reduction:</b><br> $",v1,"</h4>")),subtitle =paste(str1),width=12,
+      valueBox( HTML( paste("<b><h4>Potential Cost Reduction:</b><br> $",v1,"</h4>")),subtitle =paste(str1),width=12,
                color="blue"
            ) ,
-      valueBox(HTML( paste("<b><h4>Infection Reduction:</b></br> ",v2,"%</h4>")), subtitle = paste(str2), width=12,
+      valueBox(HTML( paste("<b><h4>Potential Infection Reduction:</b></br> ",v2,"%</h4>")), subtitle = paste(str2), width=12,
      color= "green"
           ),
-     valueBox( HTML(paste("<b><h4>Fewer Infections:</b></br>",
+     valueBox( HTML(paste("<b><h4>Potential Fewer Infections:</b></br>",
                           round(( N_enhanced_per_year * as.numeric(v2) / 100 ),0),"</h4>")), 
-                subtitle = "Infections prevented yearly.", width=12,
+                subtitle = "Estimated infections prevented yearly.", width=12,
                color= "light-blue"
+     ),
+     
+     tags$p(
+     "This calculator to be used for demonstrative purposes only. 
+     Numbers may not be reflective of actual cost savings. 
+     Be sure to enter projected numbers based on your facility's costs for closest estimate"
      ),
      
     )

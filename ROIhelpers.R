@@ -44,7 +44,7 @@ ROI_calculator <- function(V1 = 12313, PRnorm = 11, PRintv = 4.6, Time = 15, Hos
   
   ## Outputs
   Ob_output <- "Estimated cost savings per year of adding enhanced cleaning and disinfection." 
-  PRinc_output <- "Probability risk reduction of in-room transmission." 
+  PRinc_output <- "Estimated probability risk reduction of in-room transmission." 
   
   result <- as.list(c(Ob_output, PRinc_output,prettyNum(Ob ,scientific = FALSE, big.mark = ","),PRinc_print))
   
@@ -89,10 +89,10 @@ customInfoBox <- function(title, value = NULL, subtitle = NULL,
 }
 
 footnote <- HTML(paste(
-"*based on average cost of TurboPro disinfectant cleaner in a standard hospital room",
+"* Pre-populated cost based on average cost of TurboPro disinfectant cleaner in a standard hospital room",
 "<br>",
 "<br>",
-"This cost-benefit model adopted from Wendeboe, A.M., Kim, S.E., Kinny, et. al. (2021).",
+"This cost-benefit model adopted from Wendelboe, A.M., Kim, S.E., Kinny, et. al. (2021).",
 "Cost-benefit analysis of allowing additional time in cleaning hospital contact precautions room. Hospital Topics, 99(3), 130-130"
 )
 )
